@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>parth@srivastav:~$ — Portfolio</title>
+<meta name="description" content="Parth Srivastav — B.Tech CSE (AI & ML), SRMIST. Distributed systems, backend engineering and applied ML.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>▊</text></svg>">
+<style>
+:root{
+  --bg:#070b0c;
+  --bg2:#0b1113;
+  --panel:rgba(10,20,20,.72);
+  --green:#00ff9c;
+  --green-dim:#0b8a5c;
+  --amber:#ffb000;
+  --cyan:#3ddcff;
+  --magenta:#ff5cf4;
+  --text:#c9f2e4;
+  --muted:#5d7d76;
+  --line:rgba(0,255,156,.16);
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+html[data-theme="amber"]{--green:#ffb000;--green-dim:#8a5c0b;--text:#f2e0c9;--muted:#7d6b4d;--line:rgba(255,176,0,.18);--cyan:#ffd479;--magenta:#ff8a3d;}
+html[data-theme="ice"]{--green:#5ce1ff;--green-dim:#0b6a8a;--text:#cfe9f2;--muted:#5a7885;--line:rgba(92,225,255,.18);--cyan:#a9f0ff;--magenta:#8f8cff;}
+html[data-theme="matrix"]{--green:#39ff14;--green-dim:#127a0a;--text:#b9ffb0;--muted:#4c7a45;--line:rgba(57,255,20,.18);--cyan:#7dff5c;--magenta:#c8ff3d;}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--mono);
+  font-size:14px;
+  line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+#matrix{position:fixed;inset:0;z-index:0;opacity:.13;pointer-events:none}
+.vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 40%,transparent 35%,rgba(0,0,0,.55) 100%);}
+.scan{position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.28) 2px 4px);
+  mix-blend-mode:multiply;opacity:.55}
+.flicker{position:fixed;inset:0;z-index:3;pointer-events:none;background:var(--green);opacity:0;animation:flick 7s infinite}
+@keyframes flick{0%,97%,100%{opacity:0}97.5%{opacity:.012}98.4%{opacity:0}98.8%{opacity:.02}}
+
+/* ---------- BOOT ---------- */
+#boot{position:fixed;inset:0;z-index:50;background:var(--bg);padding:6vh 6vw;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-start;cursor:pointer}
+#bootlog{white-space:pre-wrap;color:var(--green);font-size:13px;text-shadow:0 0 8px var(--green-dim)}
+#boot .skip{position:absolute;bottom:22px;right:26px;color:var(--muted);font-size:12px;letter-spacing:.08em}
+.ok{color:var(--green)}.warn{color:var(--amber)}.dim{color:var(--muted)}
+
+/* ---------- SHELL ---------- */
+#app{position:relative;z-index:5;max-width:1180px;margin:0 auto;padding:26px 20px 90px;opacity:0;transition:opacity .6s ease}
+#app.show{opacity:1}
+
+.topbar{display:flex;align-items:center;gap:10px;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(0,255,156,.06),transparent);
+  border-radius:10px 10px 0 0;padding:9px 14px;backdrop-filter:blur(6px)}
+.dots{display:flex;gap:7px}
+.dot{width:11px;height:11px;border-radius:50%;background:#2b3a37;border:1px solid rgba(255,255,255,.07)}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.tt{color:var(--muted);font-size:12px;letter-spacing:.06em;flex:1;text-align:center}
+.themebtns{display:flex;gap:6px}
+.tb{width:13px;height:13px;border-radius:3px;border:1px solid rgba(255,255,255,.15);cursor:pointer;transition:transform .15s}
+.tb:hover{transform:scale(1.25)}
+.tb[data-t="green"]{background:#00ff9c}.tb[data-t="amber"]{background:#ffb000}
+.tb[data-t="ice"]{background:#5ce1ff}.tb[data-t="matrix"]{background:#39ff14}
+
+.window{border:1px solid var(--line);border-top:0;border-radius:0 0 10px 10px;
+  background:var(--panel);backdrop-filter:blur(9px);box-shadow:0 0 60px rgba(0,255,156,.05),inset 0 0 90px rgba(0,0,0,.5)}
+
+.hero{padding:26px 22px 6px;border-bottom:1px dashed var(--line)}
+pre.ascii{color:var(--green);font-size:clamp(5px,1.42vw,13px);line-height:1.05;
+  text-shadow:0 0 12px var(--green-dim);overflow:hidden;white-space:pre}
+.tag{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;color:var(--muted);font-size:12.5px}
+.tag b{color:var(--text);font-weight:500}
+.blip{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 9px var(--green);animation:pulse 1.7s infinite}
+@keyframes pulse{50%{opacity:.25}}
+
+.chips{padding:14px 20px;display:flex;flex-wrap:wrap;gap:8px;border-bottom:1px dashed var(--line)}
+.chip{border:1px solid var(--line);background:rgba(0,255,156,.04);color:var(--text);
+  padding:5px 11px;border-radius:5px;font-family:var(--mono);font-size:12px;cursor:pointer;
+  transition:.15s;letter-spacing:.02em}
+.chip:hover{background:var(--green);color:#04100c;border-color:var(--green);box-shadow:0 0 16px var(--green-dim)}
+.chip .k{color:var(--muted)}
+.chip:hover .k{color:#04100c}
+
+#screen{padding:18px 20px 8px;min-height:46vh;max-height:66vh;overflow-y:auto;scroll-behavior:smooth}
+#screen::-webkit-scrollbar{width:8px}
+#screen::-webkit-scrollbar-thumb{background:var(--green-dim);border-radius:4px}
+#screen::-webkit-scrollbar-track{background:transparent}
+
+.entry{margin-bottom:20px;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+.cmdline{color:var(--muted)}
+.cmdline .u{color:var(--green)}.cmdline .p{color:var(--cyan)}.cmdline .c{color:var(--text)}
+.out{margin-top:8px;white-space:pre-wrap}
+
+h2.sec{color:var(--amber);font-size:13px;letter-spacing:.16em;text-transform:uppercase;
+  margin:2px 0 10px;font-weight:700;display:flex;align-items:center;gap:10px}
+h2.sec:after{content:"";flex:1;height:1px;background:var(--line)}
+
+.card{border-left:2px solid var(--green-dim);padding:2px 0 2px 14px;margin:0 0 18px}
+.card h3{color:var(--green);font-size:14.5px;font-weight:700;letter-spacing:.01em}
+.card .meta{color:var(--muted);font-size:12px;margin:3px 0 8px}
+.card ul{list-style:none;margin:0}
+.card li{position:relative;padding-left:16px;margin-bottom:5px;font-size:13px;color:var(--text)}
+.card li:before{content:"▸";position:absolute;left:0;color:var(--green-dim)}
+.st{color:var(--amber);font-weight:700}
+.badge{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:1px 7px;
+  font-size:11px;color:var(--cyan);margin:2px 5px 2px 0;background:rgba(61,220,255,.05)}
+a{color:var(--cyan);text-decoration:none;border-bottom:1px dotted var(--cyan)}
+a:hover{color:var(--green);border-color:var(--green);text-shadow:0 0 8px var(--green-dim)}
+
+table.kv{border-collapse:collapse;font-size:13px}
+table.kv td{padding:2px 18px 2px 0;vertical-align:top}
+table.kv td:first-child{color:var(--muted);white-space:nowrap}
+
+.bar{display:inline-block;color:var(--green);letter-spacing:-1px}
+.bar .e{color:var(--green-dim);opacity:.35}
+
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px;margin:10px 0 4px}
+.metric{border:1px solid var(--line);border-radius:6px;padding:9px 11px;background:rgba(0,255,156,.03)}
+.metric .n{color:var(--amber);font-size:19px;font-weight:700;line-height:1.2}
+.metric .l{color:var(--muted);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+
+.promptrow{display:flex;align-items:center;gap:8px;padding:12px 20px 16px;border-top:1px dashed var(--line)}
+.ps1{color:var(--green);white-space:nowrap;font-size:13.5px}
+.ps1 .p{color:var(--cyan)}
+#input{flex:1;background:transparent;border:0;outline:0;color:var(--text);
+  font-family:var(--mono);font-size:13.5px;caret-color:transparent}
+#caret{width:9px;height:17px;background:var(--green);box-shadow:0 0 10px var(--green);animation:blink 1.05s steps(1) infinite;margin-left:-4px}
+@keyframes blink{50%{opacity:0}}
+
+.hint{color:var(--muted);font-size:11.5px;text-align:center;padding:0 20px 14px;letter-spacing:.04em}
+.footer{text-align:center;color:var(--muted);font-size:11.5px;padding:22px 10px 0;letter-spacing:.05em}
+.err{color:#ff6b6b}
+.typing:after{content:"█";color:var(--green);animation:blink 1s steps(1) infinite}
+@media(max-width:640px){
+  #app{padding:14px 10px 60px}
+  .hero{padding:18px 14px 4px}
+  #screen{padding:14px;max-height:none}
+  .chips{padding:11px 12px}
+  .promptrow{padding:11px 12px}
+  body{font-size:13px}
+}
+</style>
+</head>
+<body>
+<canvas id="matrix"></canvas>
+<div class="vignette"></div>
+<div class="scan"></div>
+<div class="flicker"></div>
+
+<div id="boot"><pre id="bootlog"></pre><div class="skip">[ click or press any key to skip ]</div></div>
+
+<div id="app">
+  <div class="topbar">
+    <div class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+    <div class="tt">parth@srivastav — ~/portfolio — zsh — 120×34</div>
+    <div class="themebtns" title="switch phosphor">
+      <span class="tb" data-t="green"></span><span class="tb" data-t="amber"></span>
+      <span class="tb" data-t="ice"></span><span class="tb" data-t="matrix"></span>
+    </div>
+  </div>
+
+  <div class="window">
+    <div class="hero">
+<pre class="ascii"> ██████╗  █████╗ ██████╗ ████████╗██╗  ██╗
+ ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██║  ██║
+ ██████╔╝███████║██████╔╝   ██║   ███████║
+ ██╔═══╝ ██╔══██║██╔══██╗   ██║   ██╔══██║
+ ██║     ██║  ██║██║  ██║   ██║   ██║  ██║
+ ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝</pre>
+      <div class="tag">
+        <span><span class="blip"></span> <b>Parth Srivastav</b></span>
+        <span class="dim">//</span>
+        <span>Distributed systems &amp; applied ML</span>
+        <span class="dim">//</span>
+        <span>B.Tech CSE (AI &amp; ML) · SRMIST · <b>8.74</b> GPA · <b>2027</b></span>
+        <span class="dim">//</span>
+        <span>Chennai, IN</span>
+      </div>
+    </div>
+
+    <div class="chips" id="chips"></div>
+    <div id="screen"></div>
+
+    <div class="promptrow" id="promptrow">
+      <span class="ps1">parth@srivastav <span class="p">~</span> $</span>
+      <input id="input" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="terminal input">
+      <span id="caret"></span>
+    </div>
+    <div class="hint">type <b>help</b> for all commands &nbsp;·&nbsp; <b>Tab</b> autocompletes &nbsp;·&nbsp; <b>↑ ↓</b> history &nbsp;·&nbsp; or just click the buttons above</div>
+  </div>
+
+  <div class="footer">built from scratch · no framework, no template · <span id="clock"></span></div>
+</div>
+
+<script>
+/* ============ DATA ============ */
+const LINKS = {
+  github:  "https://github.com/SriParth-alt",
+  linkedin:"https://www.linkedin.com/in/parth-srivastav-0762b3",
+  email:   "psh2005.ps@gmail.com",
+  phone:   "+91 84590 90301",
+  pykvDemo:"https://distributed-kv.streamlit.app/",
+  gridmind:"https://github.com/SriParth-alt/GRIDMIND",
+  harmony: "https://github.com/SriParth-alt/AI-PLAYLIST-MAKER"
+};
+
+const bar = (n) => {
+  const f = Math.round(n/10);
+  return '<span class="bar">' + '█'.repeat(f) + '<span class="e">' + '░'.repeat(10-f) + '</span></span>';
+};
+
+const OUT = {};
+
+OUT.about = `
+<h2 class="sec">whoami</h2>
+<div class="out">I'm a final-year B.Tech Computer Science student at SRMIST (AI &amp; ML specialisation),
+and I like problems where the interesting part is the <span class="st">system</span>, not the syntax.
+
+Most of what I build sits at the intersection of two things: <span class="st">infrastructure that has to
+stay correct when machines die</span>, and <span class="st">ML that has to make a decision, not just a
+prediction</span>. I wrote a fault-tolerant distributed key-value store from scratch — consistent
+hashing, leader-follower replication, an LSM-tree storage engine, no external database — and a
+reinforcement-learning engine that dispatches energy across a microgrid to cut operating cost.
+
+I'm comfortable taking a broadly-defined problem from design through deployment: architecture,
+benchmarks, tests, Docker, and a dashboard so someone else can actually see it work.
+
+Currently looking for <span class="st">SDE / AI-ML engineering roles and internships</span>.
+
+<span class="dim">Try:</span> <b>projects</b> · <b>skills</b> · <b>certs</b> · <b>contact</b></div>`;
+
+OUT.projects = `
+<h2 class="sec">projects</h2>
+
+<div class="card">
+  <h3>PyKV — Distributed Key-Value Store <span class="dim">·</span> <a href="${LINKS.pykvDemo}" target="_blank" rel="noopener">live demo</a> <span class="dim">/</span> <a href="${LINKS.github}" target="_blank" rel="noopener">code</a></h3>
+  <div class="meta">Python · FastAPI · Consistent Hashing · LSM-Tree Storage · Docker Compose · ~930 LOC, zero external DBs</div>
+  <div class="metrics">
+    <div class="metric"><div class="n">±3%</div><div class="l">key balance / 3 nodes</div></div>
+    <div class="metric"><div class="n">24%</div><div class="l">keys remapped on scale-out (vs ~75% modulo)</div></div>
+    <div class="metric"><div class="n">1.3 ms</div><div class="l">p50 read latency</div></div>
+    <div class="metric"><div class="n">100%</div><div class="l">read availability thru node failure</div></div>
+  </div>
+  <ul>
+    <li>Consistent-hash partitioning with <span class="st">450 virtual nodes</span> keeps keys within ±3% of even across a 3-node cluster and remaps only 24% of keys when the cluster grows.</li>
+    <li>LSM-tree storage engine — write-ahead log → sorted memtable → immutable SSTables — giving crash durability with O(log n) reads; 29 ms p50 for synchronously-replicated durable writes.</li>
+    <li>Leader-follower replication (R=2) plus heartbeat failure detection that evicts a dead node from the ring within <span class="st">3 seconds</span>, verified by automated kill-node tests.</li>
+    <li>Real-time cluster dashboard with hash-ring visualisation and a live failover demo; deployed via Docker Compose, one container per node, DNS-based service discovery.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>GridMind — Microgrid Energy Optimization Engine <span class="dim">·</span> <a href="${LINKS.gridmind}" target="_blank" rel="noopener">code</a></h3>
+  <div class="meta">Python · PyTorch · Deep Q-Network · XGBoost · Random Forest · real-world ASHRAE dataset</div>
+  <ul>
+    <li>Energy management system pairing <span class="st">Deep Q-Network reinforcement learning</span> with XGBoost/Random Forest demand forecasting, reducing operational cost against a rule-based baseline.</li>
+    <li>Modelled the microgrid as a custom RL environment (state–action–reward) with a savings-based counterfactual reward signal, achieving stable DQN convergence across training episodes.</li>
+    <li>Evaluated with RMSE/MAE for forecasting and reward-convergence analysis for training stability; migrated from synthetic to production data to validate generalisation.</li>
+    <li>Authored an <span class="st">IEEE-format research paper</span> covering architecture, methodology and comparative results.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>Harmony — AI Playlist Maker <span class="dim">·</span> <a href="${LINKS.harmony}" target="_blank" rel="noopener">code</a></h3>
+  <div class="meta">Python · scikit-learn · Spotify &amp; Last.fm APIs · Recommendation Systems</div>
+  <ul>
+    <li>Mood classifier (scikit-learn) across 5 categories, wired into the Spotify and Last.fm APIs to surface personalised top-20 track recommendations.</li>
+    <li>Custom filtering and ranking over real-time song metadata, with genre and energy-level weighting that improved playlist coherence and cut irrelevant suggestions.</li>
+    <li>Built as a modular REST API so a web or mobile frontend — and multi-user support — can drop in later.</li>
+  </ul>
+</div>`;
+
+OUT.skills = `
+<h2 class="sec">skills</h2>
+<div class="out"><table class="kv">
+<tr><td>Languages</td><td>Java · Python · C · JavaScript · SQL · HTML5/CSS3</td></tr>
+<tr><td>Systems</td><td>Data Structures &amp; Algorithms · Operating Systems · DBMS · Computer Networks · Distributed Systems · Concurrency · OOD · Complexity Analysis</td></tr>
+<tr><td>Backend &amp; Infra</td><td>FastAPI · Node.js · REST APIs · Docker · Docker Compose · Git/GitHub · Linux · pytest</td></tr>
+<tr><td>Frontend</td><td>React.js · HTML5 · CSS3</td></tr>
+<tr><td>Databases</td><td>MySQL · MongoDB · JDBC</td></tr>
+<tr><td>ML &amp; Data</td><td>PyTorch · scikit-learn · XGBoost · pandas · NumPy · Reinforcement Learning · NLP</td></tr>
+</table>
+
+<span class="dim">── depth ──</span>
+Python           ${bar(92)}
+Java             ${bar(84)}
+Distributed sys  ${bar(85)}
+Backend / APIs   ${bar(87)}
+ML &amp; RL          ${bar(83)}
+DSA              ${bar(88)}
+C                ${bar(72)}
+React / frontend ${bar(68)}
+</div>`;
+
+OUT.certs = `
+<h2 class="sec">certifications</h2>
+<div class="card">
+  <h3>Major Certification in Artificial Intelligence</h3>
+  <div class="meta">IIT Ropar, in association with NSDC &amp; Masai · 18-month program · Jan 2025 – Jun 2026</div>
+</div>
+<div class="card">
+  <h3>Oracle Cloud Infrastructure 2025 Certified Generative AI Professional</h3>
+  <div class="meta">Oracle University · valid until Apr 2028</div>
+</div>
+<div class="card">
+  <h3>Introduction to Machine Learning</h3>
+  <div class="meta">NPTEL · IIT Kharagpur · Jul – Sep 2025</div>
+</div>
+<div class="card">
+  <h3>Programming in Java</h3>
+  <div class="meta">NPTEL · IIT Kharagpur</div>
+</div>
+<div class="card">
+  <h3>Data Analyst</h3><div class="meta">Trainity</div>
+</div>
+<div class="card">
+  <h3>Data Analytics Essentials</h3><div class="meta">Cisco</div>
+</div>
+<div class="card">
+  <h3>Data Structures and Algorithms</h3><div class="meta">Simplilearn SkillUp</div>
+</div>`;
+
+OUT.education = `
+<h2 class="sec">education</h2>
+<div class="card">
+  <h3>B.Tech, Computer Science &amp; Engineering (AI &amp; ML)</h3>
+  <div class="meta">S.R.M Institute of Science and Technology, Chennai · Expected July 2027 · <span class="st">GPA 8.74 / 10.0</span></div>
+  <ul><li>Coursework: Data Structures &amp; Algorithms · Operating Systems · DBMS · Computer Networks · Object-Oriented Programming · Design &amp; Analysis of Algorithms</li></ul>
+</div>`;
+
+OUT.contact = `
+<h2 class="sec">contact</h2>
+<div class="out"><table class="kv">
+<tr><td>email</td><td><a href="mailto:${LINKS.email}">${LINKS.email}</a></td></tr>
+<tr><td>phone</td><td>${LINKS.phone}</td></tr>
+<tr><td>github</td><td><a href="${LINKS.github}" target="_blank" rel="noopener">github.com/SriParth-alt</a></td></tr>
+<tr><td>linkedin</td><td><a href="${LINKS.linkedin}" target="_blank" rel="noopener">linkedin.com/in/parth-srivastav-0762b3</a></td></tr>
+<tr><td>location</td><td>Chennai, Tamil Nadu, India</td></tr>
+<tr><td>status</td><td><span class="st">open to SDE / AI-ML roles &amp; internships</span></td></tr>
+</table></div>`;
+
+OUT.neofetch = `<div class="out"><table class="kv" style="font-size:12.5px">
+<tr><td colspan="2"><span class="st">parth@srivastav</span> <span class="dim">─────────────────</span></td></tr>
+<tr><td>OS</td><td>HumanOS 21.0 (Chennai build)</td></tr>
+<tr><td>Host</td><td>SRM Institute of Science &amp; Technology</td></tr>
+<tr><td>Kernel</td><td>CSE-AIML 8.74</td></tr>
+<tr><td>Uptime</td><td>3 years in CS, still compiling</td></tr>
+<tr><td>Shell</td><td>python 3.12 / java 17</td></tr>
+<tr><td>Packages</td><td>3 shipped projects, 7 certifications</td></tr>
+<tr><td>CPU</td><td>Distributed Systems @ 3.0 GHz (4 cores, replicated)</td></tr>
+<tr><td>GPU</td><td>PyTorch CUDA — DQN training</td></tr>
+<tr><td>Memory</td><td>LSM-tree backed, WAL enabled</td></tr>
+<tr><td>Disk</td><td>SSTables, immutable, compacting</td></tr>
+<tr><td>Locale</td><td>en_IN · builds in public</td></tr>
+</table></div>`;
+
+OUT.help = `<div class="out"><table class="kv">
+<tr><td>about / whoami</td><td>who I am and what I work on</td></tr>
+<tr><td>projects</td><td>PyKV, GridMind, Harmony — with numbers</td></tr>
+<tr><td>skills</td><td>languages, systems, infra, ML stack</td></tr>
+<tr><td>certs</td><td>certifications and programs</td></tr>
+<tr><td>education</td><td>degree, GPA, coursework</td></tr>
+<tr><td>contact</td><td>email, phone, GitHub, LinkedIn</td></tr>
+<tr><td>resume</td><td>quick one-screen summary</td></tr>
+<tr><td>ls</td><td>list files in this directory</td></tr>
+<tr><td>cat &lt;file&gt;</td><td>read a file (try <b>cat philosophy.txt</b>)</td></tr>
+<tr><td>open &lt;target&gt;</td><td>github · linkedin · demo · gridmind · harmony · mail</td></tr>
+<tr><td>neofetch</td><td>system info, obviously</td></tr>
+<tr><td>theme &lt;name&gt;</td><td>green · amber · ice · matrix</td></tr>
+<tr><td>banner</td><td>reprint the welcome</td></tr>
+<tr><td>clear</td><td>wipe the screen</td></tr>
+</table>
+<span class="dim">Easter eggs exist. <b>sudo</b>, <b>exit</b>, <b>hire</b> and <b>coffee</b> are a start.</span></div>`;
+
+OUT.resume = `
+<h2 class="sec">resume — one screen</h2>
+<div class="out"><table class="kv">
+<tr><td>Name</td><td><span class="st">Parth Srivastav</span> · Chennai, India</td></tr>
+<tr><td>Degree</td><td>B.Tech CSE (AI &amp; ML), SRMIST · GPA 8.74/10 · Expected July 2027</td></tr>
+<tr><td>Focus</td><td>Distributed systems, backend engineering, applied ML / RL</td></tr>
+<tr><td>Flagship</td><td>PyKV — fault-tolerant distributed KV store built from scratch (consistent hashing, LSM storage, replication, Docker)</td></tr>
+<tr><td>ML work</td><td>GridMind — DQN + XGBoost microgrid optimiser on the ASHRAE dataset; IEEE-format paper</td></tr>
+<tr><td>Stack</td><td>Java · Python · C · SQL · FastAPI · Node · React · Docker · Linux · PyTorch · scikit-learn · XGBoost · MySQL · MongoDB</td></tr>
+<tr><td>Certs</td><td>IIT Ropar AI (18-mo) · Oracle OCI GenAI Professional · NPTEL ML &amp; Java (IIT KGP) · Trainity · Cisco · Simplilearn</td></tr>
+<tr><td>Reach me</td><td><a href="mailto:${LINKS.email}">${LINKS.email}</a> · <a href="${LINKS.github}" target="_blank" rel="noopener">GitHub</a> · <a href="${LINKS.linkedin}" target="_blank" rel="noopener">LinkedIn</a></td></tr>
+</table>
+<span class="dim">Tip: press Ctrl/Cmd+P to print this page to PDF.</span></div>`;
+
+const FILES = {
+  "about.md":"about","projects/":"projects","skills.json":"skills",
+  "certifications.md":"certs","education.md":"education","contact.vcf":"contact",
+  "resume.pdf":"resume","philosophy.txt":null,".secrets":null
+};
+
+OUT.ls = `<div class="out">` +
+`<span class="dim">drwxr-xr-x</span>  <span class="st">projects/</span>
+<span class="dim">-rw-r--r--</span>  about.md
+<span class="dim">-rw-r--r--</span>  skills.json
+<span class="dim">-rw-r--r--</span>  certifications.md
+<span class="dim">-rw-r--r--</span>  education.md
+<span class="dim">-rw-r--r--</span>  contact.vcf
+<span class="dim">-rw-r--r--</span>  resume.pdf
+<span class="dim">-rw-r--r--</span>  philosophy.txt
+<span class="dim">-rw-------</span>  <span class="warn">.secrets</span>
+
+<span class="dim">use </span><b>cat &lt;file&gt;</b><span class="dim"> to read one.</span></div>`;
+
+OUT.philosophy = `<div class="out"><span class="dim">$ cat philosophy.txt</span>
+
+Three things I actually believe about building software:
+
+<span class="st">1. Benchmark or it didn't happen.</span>
+   "Fast" and "fault-tolerant" are claims. ±3% key balance, 1.3 ms p50,
+   3-second failure detection — those are facts. I try to ship facts.
+
+<span class="st">2. Build the primitive once, from scratch.</span>
+   I could have imported a database. Writing the LSM tree, the WAL and the
+   hash ring myself is the reason I now know why they're shaped that way.
+
+<span class="st">3. If nobody can see it work, it isn't finished.</span>
+   Every project gets a dashboard, a demo, or a paper. The last 10% —
+   the part where someone else can run it — is most of the value.
+</div>`;
+
+OUT.secrets = `<div class="out"><span class="err">cat: .secrets: Permission denied</span>
+
+<span class="dim">…though since you tried:</span>
+  · I read distributed-systems papers for fun (Dynamo, Bigtable, Raft).
+  · The hardest bug in PyKV was a race in the memtable flush. It took 2 days.
+  · I ship on caffeine and stubbornness, roughly 60/40.
+</div>`;
+
+OUT.banner = `<div class="out">Welcome. This is an interactive terminal — everything about me lives behind a command.
+
+  <b>about</b>      who I am
+  <b>projects</b>   what I've built (with real numbers)
+  <b>skills</b>     the stack
+  <b>certs</b>      credentials
+  <b>contact</b>    how to reach me
+
+<span class="dim">Not a terminal person? Every button under the header runs a command for you.</span></div>`;
+
+/* ============ TERMINAL ENGINE ============ */
+const screen  = document.getElementById('screen');
+const input   = document.getElementById('input');
+const chipsEl = document.getElementById('chips');
+
+const CHIPS = [
+  ['about','whoami'],['projects','what I built'],['skills','the stack'],
+  ['certs','credentials'],['education','degree'],['contact','reach me'],
+  ['resume','one screen'],['neofetch','sysinfo'],['help','all commands']
+];
+CHIPS.forEach(([cmd,label])=>{
+  const b=document.createElement('button');
+  b.className='chip'; b.innerHTML='<span class="k">$</span> '+cmd;
+  b.title=label;
+  b.onclick=()=>{ typeAndRun(cmd); };
+  chipsEl.appendChild(b);
+});
+
+const COMMANDS = ['about','whoami','projects','skills','certs','certifications','education','contact','resume','neofetch','help','ls','cat','open','theme','banner','clear','sudo','exit','hire','coffee','date','pwd','echo','man'];
+
+let history=[], hidx=-1;
+
+function print(cmd, html, noPrompt){
+  const e=document.createElement('div'); e.className='entry';
+  if(!noPrompt){
+    e.innerHTML='<div class="cmdline"><span class="u">parth@srivastav</span>:<span class="p">~</span>$ <span class="c">'+
+      cmd.replace(/</g,'&lt;')+'</span></div>';
+  }
+  const o=document.createElement('div'); o.innerHTML=html; e.appendChild(o);
+  screen.appendChild(e);
+  screen.scrollTop=screen.scrollHeight;
+  window.scrollTo({top:document.body.scrollHeight*0.0,behavior:'auto'});
+}
+
+function run(raw){
+  const line=raw.trim();
+  if(!line) return;
+  history.unshift(line); hidx=-1;
+  const [cmd,...args]=line.split(/\s+/);
+  const c=cmd.toLowerCase(), a=(args[0]||'').toLowerCase();
+
+  switch(c){
+    case 'clear': screen.innerHTML=''; return;
+    case 'about': case 'whoami': return print(line,OUT.about);
+    case 'projects': case 'project': case 'work': return print(line,OUT.projects);
+    case 'skills': case 'stack': return print(line,OUT.skills);
+    case 'certs': case 'certifications': case 'cert': return print(line,OUT.certs);
+    case 'education': case 'edu': return print(line,OUT.education);
+    case 'contact': case 'email': return print(line,OUT.contact);
+    case 'resume': case 'cv': return print(line,OUT.resume);
+    case 'neofetch': case 'fetch': return print(line,OUT.neofetch);
+    case 'help': case 'commands': case '?': return print(line,OUT.help);
+    case 'banner': return print(line,OUT.banner);
+    case 'ls': case 'dir': return print(line,OUT.ls);
+    case 'pwd': return print(line,'<div class="out">/home/parth/portfolio</div>');
+    case 'date': return print(line,'<div class="out">'+new Date().toString()+'</div>');
+    case 'echo': return print(line,'<div class="out">'+args.join(' ').replace(/</g,'&lt;')+'</div>');
+    case 'man': return print(line, a? (OUT[a]||OUT.help) : OUT.help);
+    case 'cat': {
+      if(!a) return print(line,'<div class="out err">cat: missing operand — try <b>ls</b></div>');
+      if(a.startsWith('philosophy')) return print(line,OUT.philosophy);
+      if(a.startsWith('.secret')) return print(line,OUT.secrets);
+      const key=Object.keys(FILES).find(f=>f.toLowerCase().startsWith(a.replace(/\/$/,'')));
+      if(key&&FILES[key]) return print(line,OUT[FILES[key]]);
+      return print(line,'<div class="out err">cat: '+a.replace(/</g,'&lt;')+': No such file or directory</div>');
+    }
+    case 'open': {
+      const map={github:LINKS.github,linkedin:LINKS.linkedin,demo:LINKS.pykvDemo,pykv:LINKS.pykvDemo,
+                 gridmind:LINKS.gridmind,harmony:LINKS.harmony,mail:'mailto:'+LINKS.email,email:'mailto:'+LINKS.email};
+      if(map[a]){ window.open(map[a],'_blank','noopener'); return print(line,'<div class="out">opening <span class="st">'+a+'</span> …</div>'); }
+      return print(line,'<div class="out err">open: unknown target. try: github · linkedin · demo · gridmind · harmony · mail</div>');
+    }
+    case 'theme': {
+      const t=['green','amber','ice','matrix'];
+      if(t.includes(a)){ setTheme(a); return print(line,'<div class="out">phosphor set to <span class="st">'+a+'</span></div>'); }
+      return print(line,'<div class="out err">theme: pick one of '+t.join(' · ')+'</div>');
+    }
+    case 'sudo': return print(line,'<div class="out err">parth is not in the sudoers file. This incident has been reported.</div><div class="out dim">(nice try though)</div>');
+    case 'exit': case 'quit': case 'logout': return print(line,'<div class="out">You can check out any time you like, but you can never leave.<br><span class="dim">Seriously though — <b>contact</b> is right there.</span></div>');
+    case 'hire': return print(line,'<div class="out"><span class="st">Excellent decision.</span> Routing you to the fastest path:<br><br>→ <a href="mailto:'+LINKS.email+'">'+LINKS.email+'</a><br>→ <a href="'+LINKS.linkedin+'" target="_blank" rel="noopener">LinkedIn DM</a><br><br><span class="dim">I reply fast, and I\'ll bring benchmarks.</span></div>');
+    case 'coffee': return print(line,'<div class="out">☕ brewing… <span class="dim">ERR_TEAPOT: I am a portfolio, not a teapot. (HTTP 418)</span></div>');
+    case 'rm': return print(line,'<div class="out err">rm: absolutely not.</div>');
+    default:
+      return print(line,'<div class="out err">zsh: command not found: '+c.replace(/</g,'&lt;')+'</div><div class="out dim">type <b>help</b> to see what works.</div>');
+  }
+}
+
+function typeAndRun(cmd){
+  input.value=''; let i=0;
+  const iv=setInterval(()=>{
+    input.value=cmd.slice(0,++i);
+    if(i>=cmd.length){ clearInterval(iv); setTimeout(()=>{ run(cmd); input.value=''; },130); }
+  },34);
+}
+
+input.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){ run(input.value); input.value=''; }
+  else if(e.key==='Tab'){
+    e.preventDefault();
+    const v=input.value.trim().toLowerCase();
+    if(!v) return;
+    const m=COMMANDS.filter(c=>c.startsWith(v));
+    if(m.length===1) input.value=m[0];
+    else if(m.length>1) print(input.value,'<div class="out dim">'+m.join('   ')+'</div>');
+  }
+  else if(e.key==='ArrowUp'){ e.preventDefault(); if(hidx<history.length-1){ hidx++; input.value=history[hidx]; } }
+  else if(e.key==='ArrowDown'){ e.preventDefault(); if(hidx>0){ hidx--; input.value=history[hidx]; } else { hidx=-1; input.value=''; } }
+  else if(e.key==='l'&&(e.ctrlKey||e.metaKey)){ e.preventDefault(); screen.innerHTML=''; }
+});
+document.addEventListener('click',e=>{ if(!e.target.closest('a,button,.tb')) input.focus(); });
+
+function setTheme(t){ document.documentElement.setAttribute('data-theme',t==='green'?'':t); }
+document.querySelectorAll('.tb').forEach(b=>b.onclick=()=>setTheme(b.dataset.t));
+
+/* ============ MATRIX RAIN ============ */
+(function(){
+  const cv=document.getElementById('matrix'), ctx=cv.getContext('2d');
+  let cols,drops,fs=15;
+  const glyphs='01ABCDEFGHIJKLMNOPQRSTUVWXYZ<>{}[]()/\\|=+*#$%&アイウエオカキクケコサシスセソタチツテト';
+  function size(){ cv.width=innerWidth; cv.height=innerHeight; cols=Math.floor(cv.width/fs);
+    drops=Array(cols).fill(0).map(()=>Math.random()*-100); }
+  size(); addEventListener('resize',size);
+  setInterval(()=>{
+    ctx.fillStyle='rgba(7,11,12,0.08)'; ctx.fillRect(0,0,cv.width,cv.height);
+    const col=getComputedStyle(document.documentElement).getPropertyValue('--green').trim()||'#00ff9c';
+    ctx.fillStyle=col; ctx.font=fs+'px monospace';
+    for(let i=0;i<cols;i++){
+      ctx.fillText(glyphs[Math.floor(Math.random()*glyphs.length)], i*fs, drops[i]*fs);
+      if(drops[i]*fs>cv.height && Math.random()>0.977) drops[i]=0;
+      drops[i]++;
+    }
+  },58);
+})();
+
+/* ============ CLOCK ============ */
+setInterval(()=>{
+  const d=new Date();
+  document.getElementById('clock').textContent='session '+d.toTimeString().slice(0,8)+' IST';
+},1000);
+
+/* ============ BOOT SEQUENCE ============ */
+const BOOT=[
+  ['SRIVASTAV BIOS v8.74  ·  Copyright (C) 2027 Parth Srivastav',0],
+  ['Detecting hardware ......................... <span class="ok">OK</span>',60],
+  ['  CPU: Distributed-Systems Core @ 3.0GHz (replicated x3)',30],
+  ['  MEM: LSM-tree backed, write-ahead log <span class="ok">ENABLED</span>',30],
+  ['  GPU: PyTorch CUDA device 0 <span class="ok">READY</span>',30],
+  ['',20],
+  ['Mounting /home/parth ....................... <span class="ok">OK</span>',70],
+  ['Starting hash-ring service (450 vnodes) .... <span class="ok">OK</span>',70],
+  ['Replication factor R=2 ..................... <span class="ok">OK</span>',60],
+  ['Heartbeat detector ......................... <span class="ok">ONLINE</span>',60],
+  ['Loading skills.json ........................ <span class="ok">OK</span>',60],
+  ['Loading projects/ (3 entries) .............. <span class="ok">OK</span>',60],
+  ['Verifying certifications (7) ............... <span class="ok">OK</span>',60],
+  ['Checking recruiter interest ................ <span class="warn">HIGH</span>',80],
+  ['',30],
+  ['<span class="dim">All systems nominal. Dropping to shell…</span>',260]
+];
+const bootEl=document.getElementById('boot'), logEl=document.getElementById('bootlog');
+let bi=0,bootDone=false,timer=null;
+function step(){
+  if(bi>=BOOT.length){ finish(); return; }
+  const [t,d]=BOOT[bi++];
+  logEl.innerHTML += t+'\n';
+  timer=setTimeout(step, d+70);
+}
+function finish(){
+  if(bootDone) return; bootDone=true;
+  clearTimeout(timer);
+  bootEl.style.transition='opacity .45s ease'; bootEl.style.opacity='0';
+  setTimeout(()=>{ bootEl.remove();
+    document.getElementById('app').classList.add('show');
+    print('',OUT.banner,true);
+    input.focus();
+  },430);
+}
+bootEl.addEventListener('click',finish);
+document.addEventListener('keydown',function once(){ if(!bootDone) finish(); },{once:true});
+setTimeout(step,300);
+</script>
+</body>
+</html>
