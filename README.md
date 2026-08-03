@@ -2,7 +2,7 @@
 
 An interactive terminal portfolio. Single HTML file — no framework, no build step, no dependencies.
 
-**Live:** _add your Vercel URL here_
+**Live:** [terminal-portfolio-pi-blue.vercel.app](https://terminal-portfolio-pi-blue.vercel.app)
 
 ## What it is
 
