@@ -214,6 +214,7 @@ const LINKS = {
   helixDemo:"https://distributed-kv.streamlit.app/",
   helix:   "https://github.com/SriParth-alt/distributed-kv",
   ledgerloop:"https://github.com/SriParth-alt/ledgerloop",
+  ledgerloopReport:"https://sriparth-alt.github.io/ledgerloop/results/report.html",
   statementsync:"https://github.com/SriParth-alt/StatementSync",
   gridmind:"https://github.com/SriParth-alt/GRIDMIND",
   harmony: "https://github.com/SriParth-alt/AI-PLAYLIST-MAKER"
@@ -265,7 +266,7 @@ OUT.projects = `
 </div>
 
 <div class="card">
-  <h3>LedgerLoop — Settlement Reconciliation Engine <span class="dim">·</span> <a href="${LINKS.ledgerloop}" target="_blank" rel="noopener">code</a></h3>
+  <h3>LedgerLoop — Settlement Reconciliation Engine <span class="dim">·</span> <a href="${LINKS.ledgerloopReport}" target="_blank" rel="noopener">live report</a> <span class="dim">/</span> <a href="${LINKS.ledgerloop}" target="_blank" rel="noopener">code</a></h3>
   <div class="meta">Python · SQLite · LLM adjudication · Subset-sum matching · pytest · Razorpay AI Buildathon 2026, Track 04</div>
   <div class="metrics">
     <div class="metric"><div class="n">94.6%</div><div class="l">auto-match on realistic data</div></div>
@@ -407,7 +408,7 @@ OUT.help = `<div class="out"><table class="kv">
 <tr><td>resume</td><td>quick one-screen summary</td></tr>
 <tr><td>ls</td><td>list files in this directory</td></tr>
 <tr><td>cat &lt;file&gt;</td><td>read a file (try <b>cat philosophy.txt</b>)</td></tr>
-<tr><td>open &lt;target&gt;</td><td>github · linkedin · demo · helix · ledgerloop · statementsync · gridmind · harmony · mail</td></tr>
+<tr><td>open &lt;target&gt;</td><td>github · linkedin · demo · helix · ledgerloop · report · statementsync · gridmind · harmony · mail</td></tr>
 <tr><td>neofetch</td><td>system info, obviously</td></tr>
 <tr><td>theme &lt;name&gt;</td><td>green · amber · ice · matrix</td></tr>
 <tr><td>banner</td><td>reprint the welcome</td></tr>
@@ -552,10 +553,10 @@ function run(raw){
     }
     case 'open': {
       const map={github:LINKS.github,linkedin:LINKS.linkedin,demo:LINKS.helixDemo,helix:LINKS.helix,
-                 ledgerloop:LINKS.ledgerloop,statementsync:LINKS.statementsync,
+                 ledgerloop:LINKS.ledgerloop,report:LINKS.ledgerloopReport,statementsync:LINKS.statementsync,
                  gridmind:LINKS.gridmind,harmony:LINKS.harmony,mail:'mailto:'+LINKS.email,email:'mailto:'+LINKS.email};
       if(map[a]){ window.open(map[a],'_blank','noopener'); return print(line,'<div class="out">opening <span class="st">'+a+'</span> …</div>'); }
-      return print(line,'<div class="out err">open: unknown target. try: github · linkedin · demo · helix · ledgerloop · statementsync · gridmind · harmony · mail</div>');
+      return print(line,'<div class="out err">open: unknown target. try: github · linkedin · demo · helix · ledgerloop · report · statementsync · gridmind · harmony · mail</div>');
     }
     case 'theme': {
       const t=['green','amber','ice','matrix'];
