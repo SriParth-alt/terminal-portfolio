@@ -211,7 +211,10 @@ const LINKS = {
   linkedin:"https://www.linkedin.com/in/parth-srivastav-0762b3",
   email:   "psh2005.ps@gmail.com",
   phone:   "+91 84590 90301",
-  pykvDemo:"https://distributed-kv.streamlit.app/",
+  helixDemo:"https://distributed-kv.streamlit.app/",
+  helix:   "https://github.com/SriParth-alt/distributed-kv",
+  ledgerloop:"https://github.com/SriParth-alt/ledgerloop",
+  statementsync:"https://github.com/SriParth-alt/StatementSync",
   gridmind:"https://github.com/SriParth-alt/GRIDMIND",
   harmony: "https://github.com/SriParth-alt/AI-PLAYLIST-MAKER"
 };
@@ -245,7 +248,7 @@ OUT.projects = `
 <h2 class="sec">projects</h2>
 
 <div class="card">
-  <h3>PyKV — Distributed Key-Value Store <span class="dim">·</span> <a href="${LINKS.pykvDemo}" target="_blank" rel="noopener">live demo</a> <span class="dim">/</span> <a href="${LINKS.github}" target="_blank" rel="noopener">code</a></h3>
+  <h3>Helix — Distributed Key-Value Store <span class="dim">·</span> <a href="${LINKS.helixDemo}" target="_blank" rel="noopener">live demo</a> <span class="dim">/</span> <a href="${LINKS.helix}" target="_blank" rel="noopener">code</a></h3>
   <div class="meta">Python · FastAPI · Consistent Hashing · LSM-Tree Storage · Docker Compose · ~930 LOC, zero external DBs</div>
   <div class="metrics">
     <div class="metric"><div class="n">±3%</div><div class="l">key balance / 3 nodes</div></div>
@@ -258,6 +261,34 @@ OUT.projects = `
     <li>LSM-tree storage engine — write-ahead log → sorted memtable → immutable SSTables — giving crash durability with O(log n) reads; 29 ms p50 for synchronously-replicated durable writes.</li>
     <li>Leader-follower replication (R=2) plus heartbeat failure detection that evicts a dead node from the ring within <span class="st">3 seconds</span>, verified by automated kill-node tests.</li>
     <li>Real-time cluster dashboard with hash-ring visualisation and a live failover demo; deployed via Docker Compose, one container per node, DNS-based service discovery.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>LedgerLoop — Settlement Reconciliation Engine <span class="dim">·</span> <a href="${LINKS.ledgerloop}" target="_blank" rel="noopener">code</a></h3>
+  <div class="meta">Python · SQLite · LLM adjudication · Subset-sum matching · pytest · Razorpay AI Buildathon 2026, Track 04</div>
+  <div class="metrics">
+    <div class="metric"><div class="n">94.6%</div><div class="l">auto-match on realistic data</div></div>
+    <div class="metric"><div class="n">0.0%</div><div class="l">false matches, every config</div></div>
+    <div class="metric"><div class="n">5 vs 185</div><div class="l">LLM calls vs LLM-only baseline</div></div>
+    <div class="metric"><div class="n">471</div><div class="l">tests passing, offline</div></div>
+  </div>
+  <ul>
+    <li>Reconciles a merchant's invoice ledger, gateway settlement report and bank statement — three documents that never agree, because of fees (MDR, GST, TDS), N:1 batched credits, mangled UTRs and T+1–T+3 timing.</li>
+    <li>Deterministic-first cascade: exact → tolerant → <span class="st">subset-sum</span> matching resolves almost everything; an LLM sees only the residual, and every proposal must pass schema, membership and arithmetic gates before a rupee moves.</li>
+    <li>On adversarial data the cascade auto-matches <span class="st">67.9%</span> with zero false matches, while an LLM-only control arm gets 53.9% and falsely matches 1.1%.</li>
+    <li>Integer-paise money, append-only SQLite with SHA-256 idempotent ingest, a reason-coded exception queue, and a committed response cache so the whole pipeline replays byte-identically with no API key.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>StatementSync — Bank Statement Migration Pipeline <span class="dim">·</span> <a href="${LINKS.statementsync}" target="_blank" rel="noopener">code</a></h3>
+  <div class="meta">Python · SQLAlchemy · SQLite / PostgreSQL · YAML mappings · pytest · 119 tests</div>
+  <ul>
+    <li>Consolidates incompatible Indian bank CSV exports (HDFC, ICICI) into one canonical transaction table — lakh grouping, Cr/Dr suffixes, junk header rows and trailer totals all handled; a new bank is <span class="st">a YAML file, not new code</span>.</li>
+    <li>Every load ends in a reconciliation report that independently checks row counts, debit/credit totals and per-account netting, and exits non-zero unless the result is clean.</li>
+    <li>Balance-continuity checks catch missing rows: in the sample, the reported drift equals the quarantined rows to the rupee.</li>
+    <li><code>Decimal</code> money end to end, strict date formats (never guessed), SHA-256 fingerprints for idempotent re-runs, quarantine-never-drop, and one-command <span class="st">rollback</span> per run.</li>
   </ul>
 </div>
 
@@ -358,7 +389,7 @@ OUT.neofetch = `<div class="out"><table class="kv" style="font-size:12.5px">
 <tr><td>Kernel</td><td>CSE-AIML 8.74</td></tr>
 <tr><td>Uptime</td><td>3 years in CS, still compiling</td></tr>
 <tr><td>Shell</td><td>python 3.12 / java 17</td></tr>
-<tr><td>Packages</td><td>3 shipped projects, 7 certifications</td></tr>
+<tr><td>Packages</td><td>5 shipped projects, 7 certifications</td></tr>
 <tr><td>CPU</td><td>Distributed Systems @ 3.0 GHz (4 cores, replicated)</td></tr>
 <tr><td>GPU</td><td>PyTorch CUDA — DQN training</td></tr>
 <tr><td>Memory</td><td>LSM-tree backed, WAL enabled</td></tr>
@@ -368,7 +399,7 @@ OUT.neofetch = `<div class="out"><table class="kv" style="font-size:12.5px">
 
 OUT.help = `<div class="out"><table class="kv">
 <tr><td>about / whoami</td><td>who I am and what I work on</td></tr>
-<tr><td>projects</td><td>PyKV, GridMind, Harmony — with numbers</td></tr>
+<tr><td>projects</td><td>Helix, LedgerLoop, StatementSync, GridMind, Harmony — with numbers</td></tr>
 <tr><td>skills</td><td>languages, systems, infra, ML stack</td></tr>
 <tr><td>certs</td><td>certifications and programs</td></tr>
 <tr><td>education</td><td>degree, GPA, coursework</td></tr>
@@ -376,7 +407,7 @@ OUT.help = `<div class="out"><table class="kv">
 <tr><td>resume</td><td>quick one-screen summary</td></tr>
 <tr><td>ls</td><td>list files in this directory</td></tr>
 <tr><td>cat &lt;file&gt;</td><td>read a file (try <b>cat philosophy.txt</b>)</td></tr>
-<tr><td>open &lt;target&gt;</td><td>github · linkedin · demo · gridmind · harmony · mail</td></tr>
+<tr><td>open &lt;target&gt;</td><td>github · linkedin · demo · helix · ledgerloop · statementsync · gridmind · harmony · mail</td></tr>
 <tr><td>neofetch</td><td>system info, obviously</td></tr>
 <tr><td>theme &lt;name&gt;</td><td>green · amber · ice · matrix</td></tr>
 <tr><td>banner</td><td>reprint the welcome</td></tr>
@@ -390,7 +421,8 @@ OUT.resume = `
 <tr><td>Name</td><td><span class="st">Parth Srivastav</span> · Chennai, India</td></tr>
 <tr><td>Degree</td><td>B.Tech CSE (AI &amp; ML), SRMIST · GPA 8.74/10 · Expected July 2027</td></tr>
 <tr><td>Focus</td><td>Distributed systems, backend engineering, applied ML / RL</td></tr>
-<tr><td>Flagship</td><td>PyKV — fault-tolerant distributed KV store built from scratch (consistent hashing, LSM storage, replication, Docker)</td></tr>
+<tr><td>Flagship</td><td>Helix — fault-tolerant distributed KV store built from scratch (consistent hashing, LSM storage, replication, Docker)</td></tr>
+<tr><td>Fintech</td><td>LedgerLoop — deterministic-first settlement reconciliation, 94.6% auto-match at 0% false matches · StatementSync — bank statement migration with provable reconciliation</td></tr>
 <tr><td>ML work</td><td>GridMind — DQN + XGBoost microgrid optimiser on the ASHRAE dataset; IEEE-format paper</td></tr>
 <tr><td>Stack</td><td>Java · Python · C · SQL · FastAPI · Node · React · Docker · Linux · PyTorch · scikit-learn · XGBoost · MySQL · MongoDB</td></tr>
 <tr><td>Certs</td><td>IIT Ropar AI (18-mo) · Oracle OCI GenAI Professional · NPTEL ML &amp; Java (IIT KGP) · Trainity · Cisco · Simplilearn</td></tr>
@@ -438,7 +470,7 @@ OUT.secrets = `<div class="out"><span class="err">cat: .secrets: Permission deni
 
 <span class="dim">…though since you tried:</span>
   · I read distributed-systems papers for fun (Dynamo, Bigtable, Raft).
-  · The hardest bug in PyKV was a race in the memtable flush. It took 2 days.
+  · The hardest bug in Helix was a race in the memtable flush. It took 2 days.
   · I ship on caffeine and stubbornness, roughly 60/40.
 </div>`;
 
@@ -519,10 +551,11 @@ function run(raw){
       return print(line,'<div class="out err">cat: '+a.replace(/</g,'&lt;')+': No such file or directory</div>');
     }
     case 'open': {
-      const map={github:LINKS.github,linkedin:LINKS.linkedin,demo:LINKS.pykvDemo,pykv:LINKS.pykvDemo,
+      const map={github:LINKS.github,linkedin:LINKS.linkedin,demo:LINKS.helixDemo,helix:LINKS.helix,
+                 ledgerloop:LINKS.ledgerloop,statementsync:LINKS.statementsync,
                  gridmind:LINKS.gridmind,harmony:LINKS.harmony,mail:'mailto:'+LINKS.email,email:'mailto:'+LINKS.email};
       if(map[a]){ window.open(map[a],'_blank','noopener'); return print(line,'<div class="out">opening <span class="st">'+a+'</span> …</div>'); }
-      return print(line,'<div class="out err">open: unknown target. try: github · linkedin · demo · gridmind · harmony · mail</div>');
+      return print(line,'<div class="out err">open: unknown target. try: github · linkedin · demo · helix · ledgerloop · statementsync · gridmind · harmony · mail</div>');
     }
     case 'theme': {
       const t=['green','amber','ice','matrix'];

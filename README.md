@@ -11,7 +11,7 @@ A working shell in the browser. Everything about me lives behind a command:
 | command | does |
 |---|---|
 | `about` / `whoami` | who I am and what I work on |
-| `projects` | PyKV, GridMind, Harmony — with benchmarks |
+| `projects` | Helix, LedgerLoop, StatementSync, GridMind, Harmony — with benchmarks |
 | `skills` | languages, systems, infra, ML stack |
 | `certs` | certifications |
 | `education` | degree, GPA, coursework |
